@@ -5,7 +5,7 @@ Provides SQL type definitions and type conversion utilities.
 
 from typing import Dict
 
-from table_meta.model import Column
+from omymodels.table_meta.model import Column
 
 from omymodels.types.converter import TypeConverter
 from omymodels.types.sql_types import (

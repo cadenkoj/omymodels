@@ -2,7 +2,7 @@
 
 from typing import Dict, List, Optional, Set
 
-from table_meta.model import Column
+from omymodels.table_meta.model import Column
 
 from omymodels.generation.base import BaseGenerator
 from omymodels.helpers import datetime_now_check

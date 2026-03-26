@@ -1,7 +1,7 @@
 from typing import List, Optional
 
-from table_meta import TableMeta
-from table_meta.model import Column
+from omymodels.table_meta.model import TableMeta
+from omymodels.table_meta.model import Column
 
 import omymodels.types as t
 from omymodels.helpers import create_class_name, datetime_now_check

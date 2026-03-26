@@ -5,7 +5,7 @@ import sys
 from typing import Dict, List, Optional
 
 from simple_ddl_parser import DDLParser, parse_from_file
-from table_meta import TableMeta, Type
+from omymodels.table_meta.model import TableMeta, Type
 
 from omymodels.errors import NoTablesError
 from omymodels.generators import get_generator_by_type, render_jinja2_template

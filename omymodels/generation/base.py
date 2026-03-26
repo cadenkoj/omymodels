@@ -3,7 +3,7 @@
 from abc import ABC, abstractmethod
 from typing import Any, Dict, List, Optional
 
-from table_meta.model import TableMeta
+from omymodels.table_meta.model import TableMeta
 
 
 class BaseGenerator(ABC):

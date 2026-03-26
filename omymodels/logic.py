@@ -1,6 +1,6 @@
 from typing import Dict, List
 
-from table_meta.model import Column
+from omymodels.table_meta.model import Column
 
 import omymodels.types as t
 

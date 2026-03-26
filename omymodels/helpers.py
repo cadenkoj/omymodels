@@ -1,7 +1,7 @@
 import re
 from typing import List, Optional, Text
 
-from table_meta import Type
+from omymodels.table_meta.model import Type
 
 
 def from_class_to_table_name(name: str) -> str:

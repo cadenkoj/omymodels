@@ -7,26 +7,26 @@ from typing import List
 from jinja2 import Template
 
 from omymodels.models.dataclass import core as d
-from omymodels.models.gino import core as g
-from omymodels.models.openapi3 import core as oas3
-from omymodels.models.pydantic import core as p
-from omymodels.models.pydantic_v2 import core as p2
-from omymodels.models.sqlalchemy import core as s
-from omymodels.models.sqlalchemy_core import core as sc
-from omymodels.models.sqlalchemy_v2 import core as s2
-from omymodels.models.sqlmodel import core as sm
+# from omymodels.models.gino import core as g
+# from omymodels.models.openapi3 import core as oas3
+# from omymodels.models.pydantic import core as p
+# from omymodels.models.pydantic_v2 import core as p2
+# from omymodels.models.sqlalchemy import core as s
+# from omymodels.models.sqlalchemy_core import core as sc
+# from omymodels.models.sqlalchemy_v2 import core as s2
+# from omymodels.models.sqlmodel import core as sm
 
 # Built-in generator modules
 models = {
-    "gino": g,
-    "pydantic": p,
-    "pydantic_v2": p2,
+    # "gino": g,
+    # "pydantic": p,
+    # "pydantic_v2": p2,
     "dataclass": d,
-    "sqlalchemy": s,
-    "sqlalchemy_v2": s2,
-    "sqlalchemy_core": sc,
-    "sqlmodel": sm,
-    "openapi3": oas3,
+    # "sqlalchemy": s,
+    # "sqlalchemy_v2": s2,
+    # "sqlalchemy_core": sc,
+    # "sqlmodel": sm,
+    # "openapi3": oas3,
 }
 
 supported_models = list(models.keys())

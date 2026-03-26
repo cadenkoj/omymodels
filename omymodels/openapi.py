@@ -7,7 +7,7 @@ to Python model code (Pydantic, Dataclass, SQLAlchemy, etc.).
 import json
 from typing import Dict
 
-from table_meta.model import Column, TableMeta
+from omymodels.table_meta.model import Column, TableMeta
 
 from omymodels.generators import get_generator_by_type, render_jinja2_template
 from omymodels.helpers import add_custom_types_to_generator
@@ -112,7 +112,7 @@ def _parse_openapi3_schema(schema_content: str) -> tuple:
 
         elif "enum" in definition:
             # Handle enum types
-            from table_meta import Type
+            from omymodels.table_meta.model import Type
 
             enum_type = Type(
                 type_name=name,

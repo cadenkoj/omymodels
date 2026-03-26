@@ -2,7 +2,7 @@ import pathlib
 from typing import Dict, List, Tuple
 
 from jinja2 import Template
-from table_meta import Type
+from omymodels.table_meta.model import Type
 
 from omymodels.helpers import create_class_name, enum_number_name_list
 
