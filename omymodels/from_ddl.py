@@ -375,7 +375,7 @@ def prepare_data(item: Dict) -> Dict:
 def format_to_py_var(value: str) -> str:
     if value in ["false", "true"]:
         return value.capitalize()
-    return value
+    return str(value)
 
 
 def clean_value(string: str) -> str:
