@@ -2,7 +2,7 @@ import copy
 import os
 import re
 import sys
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
 from simple_ddl_parser import DDLParser, parse_from_file
 from omymodels.table_meta.model import TableMeta, Type
@@ -372,7 +372,7 @@ def prepare_data(item: Dict) -> Dict:
     return item
 
 
-def format_to_py_var(value: str) -> str:
+def format_to_py_var(value: Any) -> str:
     if value in ["false", "true"]:
         return value.capitalize()
     return str(value)

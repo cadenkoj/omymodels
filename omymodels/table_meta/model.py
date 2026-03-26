@@ -1,12 +1,15 @@
-from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
-from typing import List, Optional, Dict, Union, Tuple
+from pydantic import field_validator, model_validator, ConfigDict, BaseModel, Field
+from typing import List, Optional, Union, Dict, Tuple
+
 
 class ColumnBase(BaseModel):
     name: str
     type: str
     size: Optional[Union[str, int, Tuple]] = None
 
+
 class HQLProperties(BaseModel):
+
     clustered_by: Optional[List] = None
     location: Optional[str] = None
     external: Optional[bool] = None
@@ -17,14 +20,18 @@ class HQLProperties(BaseModel):
     collection_items_terminated_by: Optional[str] = None
     stored_as: Optional[str] = None
 
+
 class TableProperties(HQLProperties):
+
     indexes: Optional[List] = None
     alter: Optional[List] = None
     tablespace: Optional[str] = None
     partitioned_by: Optional[List[ColumnBase]] = None
     if_not_exists: Optional[bool] = None
 
+
 class Column(ColumnBase):
+
     primary_key: bool = False
     unique: bool = False
     default: Optional[str] = None
@@ -37,20 +44,20 @@ class Column(ColumnBase):
     comment: Optional[str] = None
 
     @field_validator("size")
+    @classmethod
     def size_must_contain_space(cls, v):
         if isinstance(v, str) and v.isnumeric():
             return int(v)
         return v
 
-class TableMeta(BaseModel):
-    model_config = ConfigDict(arbitrary_types_allowed=True)
 
+class TableMeta(BaseModel):
     name: str = Field(alias="table_name")
-    field_schema: Optional[str] = Field(alias="schema")
+    field_schema: Optional[str] = Field(None, alias="schema")
     dataset: Optional[str] = None
     columns: List[Column]
-    indexes: Optional[List[Dict]] = Field(alias="index")
-    alter: Optional[Dict] = None
+    indexes: Optional[List[Dict]] = Field(None, alias="index")
+    alter: Optional[Dict] = {}
     checks: Optional[List[Dict]] = None
     properties: Optional[TableProperties] = None
     primary_key: List
@@ -62,15 +69,19 @@ class TableMeta(BaseModel):
         return self.field_schema or self.dataset
 
     @model_validator(mode="before")
+    @classmethod
     def set_properties(cls, values: Dict):
         properties = {}
         for key, value in values.items():
-            if key not in TableMeta.model_fields.keys():
+            if key not in TableMeta.model_fields:
                 properties[key] = value
         if not values.get("properties"):
             values["properties"] = {}
         values["properties"].update(properties)
+
         return values
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+
 
 class Type(BaseModel):
     name: str = Field(alias="type_name")
