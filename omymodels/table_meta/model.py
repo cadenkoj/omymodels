@@ -1,32 +1,93 @@
-from dataclasses import dataclass
-from typing import List, Optional
+from pydantic import BaseModel, Field, field_validator, model_validator
+from typing import List, Optional, Union, Dict, Tuple
 
 
-@dataclass
-class Column:
+class ColumnBase(BaseModel):
     name: str
     type: str
-    default: Optional[str] = None
-    nullable: bool = False
-    size: Optional[int] = None
+    size: Optional[Union[str, int, Tuple]]
+
+
+class HQLProperties(BaseModel):
+
+    clustered_by: Optional[List]
+    location: Optional[str]
+    external: Optional[bool]
+    row_format: Optional[str]
+    fields_terminated_by: Optional[str]
+    lines_terminated_by: Optional[str]
+    map_keys_terminated_by: Optional[str]
+    collection_items_terminated_by: Optional[str]
+    stored_as: Optional[str]
+
+
+class TableProperties(HQLProperties):
+
+    indexes: Optional[List]
+    alter: Optional[List]
+    tablespace: Optional[str]
+    partitioned_by: Optional[List[ColumnBase]]
+    if_not_exists: Optional[bool]
+
+
+class Column(ColumnBase):
+
     primary_key: bool = False
     unique: bool = False
-    references: Optional[dict] = None
+    default: Optional[str]
+    nullable: bool = True
+    identifier: Optional[bool]
+    generated_as: Optional[str]
+    properties: Optional[Dict]
+    references: Optional[Dict]
+    foreign_key: Optional[str]
+    comment: Optional[str]
+
+    @field_validator("size")
+    def size_must_contain_space(cls, v):
+        if isinstance(v, str) and v.isnumeric():
+            return int(v)
+        return v
 
 
-@dataclass
-class TableMeta:
-    name: str
+class TableMeta(BaseModel):
+    name: str = Field(alias="table_name")
+    field_schema: Optional[str] = Field(alias="schema")
+    dataset: Optional[str]
     columns: List[Column]
-    primary_key: List[str]
-    indexes: Optional[List[str]] = None
-    constraints: Optional[dict] = None
-    table_schema: Optional[str] = None
+    indexes: Optional[List[Dict]] = Field(alias="index")
+    alter: Optional[Dict] = {}
+    checks: Optional[List[Dict]]
+    properties: Optional[TableProperties]
+    primary_key: List
+    parents: Optional[List[str]]
+    project: Optional[str]
 
-@dataclass
-class Type:
-    name: str
+    @property
+    def table_schema(self):
+        return self.field_schema or self.dataset
+
+    @model_validator(mode="before")
+    def set_properties(cls, values: Dict):
+        properties = {}
+        for key, value in values.items():
+            if key not in TableMeta.model_fields:
+                properties[key] = value
+        if not values.get("properties"):
+            values["properties"] = {}
+        values["properties"].update(properties)
+
+        return values
+
+    class Config:
+        """ pydantic class config """
+
+        arbitrary_types_allowed = True
+
+
+class Type(BaseModel):
+    name: str = Field(alias="type_name")
     base_type: str
     parents: Optional[List[str]]
-    properties: Optional[dict]
-    attrs: Optional[List[dict]]
+    properties: Optional[Dict]
+    attrs: Optional[List[Dict]]
